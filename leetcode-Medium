@@ -1,0 +1,26 @@
+184. 【Department Highest Salary】
+
+SELECT a.name Department, b.name Employee, Salary FROM employee b 
+JOIN department a ON b.departmentid = a.id
+WHERE (departmentid, salary) IN ( (select departmentid, max(salary) from employee group by departmentid) )
+
+177. 【Nth Highest Salary】'dense_rank() over'
+
+将表格按序排列，从表格里选择指定的数 where 结果=N
+select distinct salary
+     from (
+         select salary,
+         dense_rank() over(order by salary desc) as rnk
+         from employee
+     ) as a
+     where a.rnk=N
+
+178. 【Rank Scores】
+- 什么是widow function, dense_rank() over
+select Score, dense_rank() over (order by score desc) as 'Rank'
+from scores
+
+Q626. 【Exchange Seats】
+
+SELECT IF(id%2=0,id-1,IF(id=(SELECT count(DISTINCT id) from seat),id,id+1)) AS id,student from seat ORDER BY id;
+
