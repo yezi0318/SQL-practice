@@ -37,11 +37,25 @@ Q595: million = 6个0
 SELECT name, population, area FROM World
 WHERE area > 3000000 OR population > 25000000;
 
+Q619: 【Biggest Single Number】The HAVING clause was added to SQL because the WHERE keyword could not be used with aggregate functions.
+                              The IN operator allows you to specify multiple values in a WHERE clause.
+                              The IN operator is a shorthand for multiple OR conditions.
+
+SELECT Max(num) AS num FROM my_numbers
+WHERE num IN (SELECT num FROM my_numbers GROUP BY num HAVING count(num) = 1);
+
+
 Q620: 把三个条件列清楚， 排序大-小 = DESC
 SELECT id, movie, description, rating FROM cinema
 WHERE description != 'boring' AND id % 2 !=0 
 ORDER BY rating DESC;
 
+Q1076. 【Project Employees II】
+1# 主要是解决，出现多个最大值的情况
+2# 首先增加子表，使用倒序和限制数量组合，得出最大值group by project_id order by count(employee_id) desc limit 1
+select project_id from Project
+group by project_id
+having count(employee_id)=(select count(employee_id) from Project group by project_id order by count(employee_id) desc limit 1 )
 
 Q1179. 【Reformat Department Table】
 步骤1：如何统计有哪些部门id？ 想要统计表格有哪些部门id，'GROUP BY'
@@ -76,3 +90,18 @@ SELECT id,
     MAX(IF(`month`='Nov',revenue,NULL)) Nov_Revenue,
     MAX(IF(`month`='Dec',revenue,NULL)) Dec_Revenue
 FROM Department GROUP BY id;
+
+1303. 【Find the Team Size】count要在select里边
+
+select employee_id, (select count(*) from Employee e2 
+where e1.team_id = e2.team_id)as team_size
+from Employee e1;
+
+1322. 【Ads Performance】 IFNULL() function returns a specified value if the expression is NULL. 逗号前显示NULL，结果显示逗号后边的；逗号前显示其他字符，显示逗号前字符/ Round()
+
+If the expression is NOT NULL, this function returns the expression.
+SELECT ad_id,IFNULL(ROUND(SUM(action = 'Clicked')/(SUM(action = 'Clicked')+SUM(action = 'Viewed'))*100,2),0) AS ctr
+FROM Ads
+GROUP BY ad_id
+ORDER BY ctr DESC,ad_id
+
