@@ -50,6 +50,8 @@ SELECT id, movie, description, rating FROM cinema
 WHERE description != 'boring' AND id % 2 !=0 
 ORDER BY rating DESC;
 
+Q.1068: left join
+
 Q1076. 【Project Employees II】
 1# 主要是解决，出现多个最大值的情况
 2# 首先增加子表，使用倒序和限制数量组合，得出最大值group by project_id order by count(employee_id) desc limit 1
