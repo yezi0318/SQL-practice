@@ -24,3 +24,19 @@ Q626. 【Exchange Seats】
 
 SELECT IF(id%2=0,id-1,IF(id=(SELECT count(DISTINCT id) from seat),id,id+1)) AS id,student from seat ORDER BY id;
 
+Q1045. 【Customers Who Bought All Products】 'The SELECT DISTINCT statement is used to return only distinct (different) values' Having左边是Customer表里的，右面是Product的
+
+SELECT customer_id FROM Customer
+GROUP BY customer_id
+HAVING count(DISTINCT product_key) = (SELECT count(*) FROM Product)
+
+Q1112. 【Highest Grade For Each Student】从grade找最高分， student_id按照从小到大的顺序(group by; desc), course_ID要最小(Min)
+
+SELECT student_id, MIN(course_id) course_id, grade
+FROM Enrollments
+WHERE (student_id, grade) IN 
+        (SELECT student_id, MAX(grade) 
+        FROM Enrollments
+        GROUP BY student_id)
+GROUP BY student_id
+ORDER BY student_id
